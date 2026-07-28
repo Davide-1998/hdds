@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.14 FATAL_ERROR)
 project(hdds
-    VERSION 1.0.11
+    VERSION 1.1.2
     DESCRIPTION "High-performance DDS"
     LANGUAGES C CXX
 )
