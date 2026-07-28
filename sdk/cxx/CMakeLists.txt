@@ -6,7 +6,6 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
 
 option(BUILD_SHARED_LIBS "Build static or shared library" OFF)
-option(HDDS_BUILD_INSTALL "Build install target" OFF)
 option(BUILD_EXAMPLES "Build examples" ON)
 option(BUILD_TESTS "Build tests" ON)
 
@@ -37,23 +36,6 @@ target_include_directories(hdds_cxx
 )
 
 target_link_libraries(hdds_cxx PUBLIC hdds::hdds_c PRIVATE Threads::Threads ${CMAKE_DL_LIBS})
-
-# Install
-if(HDDS_BUILD_INSTALL)
-    install(TARGETS hdds_cxx
-        EXPORT hdds_cxx-targets
-        LIBRARY DESTINATION lib
-        ARCHIVE DESTINATION lib
-    )
-
-    install(DIRECTORY include/ DESTINATION include)
-
-    install(EXPORT hdds_cxx-targets
-        FILE hdds_cxxTargets.cmake
-        NAMESPACE hdds::
-        DESTINATION lib/cmake/hdds_cxx
-    )
-endif()
 
 # Examples
 if(BUILD_EXAMPLES)

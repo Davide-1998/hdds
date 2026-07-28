@@ -7,7 +7,6 @@ project(hdds
 
 option(BUILD_SHARED_LIBS "Build static or shared library" OFF)
 option(BUILD_HDDS_CXX "Enable building hdds_cxx library" ON)
-option(HDDS_BUILD_INSTALL "Build install target" OFF)
 
 # Set CMAKE_BUILD_TYPE if neither parent nor project set it or if we are using
 # a multi-config generator
@@ -36,7 +35,7 @@ set(HDDS_C_LIBRARY_NAME ${HDDS_LIBRARY_PREFIX}hdds_c)
 
 # Use the build type to know the folder in which the library will be built
 if(${CMAKE_BUILD_TYPE} STREQUAL "Release" OR ${CMAKE_BUILD_TYPE} STREQUAL "Debug")
-string(TOLOWER ${CMAKE_BUILD_TYPE} HDDS_BUILD_TYPE)
+    string(TOLOWER ${CMAKE_BUILD_TYPE} HDDS_BUILD_TYPE)
 else()
     set(HDDS_BUILD_TYPE "release")
 endif()
@@ -104,54 +103,4 @@ target_include_directories(${PROJECT_NAME}_c INTERFACE
 # Expose also hdds_cxx target
 if(BUILD_HDDS_CXX)
   add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/sdk/cxx")
-endif()
-
-if(HDDS_BUILD_INSTALL)
-  include(CMakePackageConfigHelpers)
-
-  get_filename_component(file ${HDDS_C_HEADERS} ABSOLUTE)
-  install(FILES ${file} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
-
-  # Configuration
-  configure_package_config_file(
-    ${CMAKE_CURRENT_SOURCE_DIR}/cmake/${PROJECT_NAME}Config.cmake.in
-    ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}Config.cmake
-    INSTALL_DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME}
-  )
-  write_basic_package_version_file(
-    ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake
-    VERSION ${PROJECT_VERSION}
-    COMPATIBILITY SameMajorVersion
-  )
-  # Package
-  install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}Config.cmake
-                ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake
-          DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME}
-  )
-  install(
-    EXPORT ${PROJECT_NAME}Targets
-    FILE ${PROJECT_NAME}Targets.cmake
-    NAMESPACE ${PROJECT_NAME}::
-    DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME}
-  )
-  install(
-    TARGETS ${PROJECT_NAME}
-    EXPORT ${PROJECT_NAME}Targets
-    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
-    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
-    ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
-  )
-
-  #
-  # CPack
-  #
-  set(CPACK_GENERATOR DEB RPM TXZ TGZ)
-  set(CPACK_PACKAGE_VERSION ${PROJECT_VERSION})
-  set(CPACK_PACKAGE_NAME ${PROJECT_NAME})
-  set(CPACK_PACKAGE_DESCRIPTION_SUMMARY ${PROJECT_DESCRIPTION})
-  set(CPACK_PACKAGE_FILE_NAME
-      "${CPACK_PACKAGE_NAME}-${CPACK_PACKAGE_VERSION}.${CMAKE_SYSTEM_PROCESSOR}"
-  )
-  set(CPACK_PACKAGE_RPM_DIR "${CMAKE_CURRENT_BINARY_DIR}/_CPack_Packages/Linux/RPM")
-  include(CPack)
 endif()
