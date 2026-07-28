@@ -79,7 +79,7 @@ add_library(${PROJECT_NAME}::${PROJECT_NAME}_c ALIAS ${PROJECT_NAME}_c)
 
 if (WIN32)
   # Link Windows libraries
-  target_link_libraries(${PROJECT_NAME}_c INTERFACE ntdll kernel32 ws2_32 userenv iphlpapi)
+  target_link_libraries(${PROJECT_NAME}_c INTERFACE ntdll kernel32 ws2_32 userenv iphlpapi bcrypt)
 endif()
 
 # Manually specify the dependency between HDDS target and the fake one to ensure compiler will not invert the order
