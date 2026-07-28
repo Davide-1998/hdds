@@ -58,14 +58,16 @@ endif()
 set(HDDS_C_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/sdk/c/include")
 set(HDDS_C_HEADERS "${HDDS_C_INCLUDE_DIR}/hdds.h")
 
-# Set build flag for cargo given the build type
-set(HDDS_CARGO_BUILD_FLAG "--${HDDS_BUILD_TYPE}")
+# Set build flag for cargo only if building in Release
+if(${HDDS_BUILD_TYPE} STREQUAL "release")
+    set(HDDS_CARGO_RELEASE_BUILD_FLAG "--${HDDS_BUILD_TYPE}")
+endif()
 
 # Add a custom command to build the library and a custom target that depends on the output of the command
 # that will triger the cargo build task
 add_custom_target(${PROJECT_NAME}_rust ALL
   ${CARGO_EXECUTABLE} "rustc" "--manifest-path" "${CMAKE_CURRENT_SOURCE_DIR}/Cargo.toml"
-                      "--package" "hdds-c" "${HDDS_CARGO_BUILD_FLAG}"
+                      "--package" "hdds-c" "${HDDS_CARGO_RELEASE_BUILD_FLAG}"
                       "--crate-type" $<IF:$<BOOL:${BUILD_SHARED_LIBS}>,"cdylib","staticlib">
                       "--target-dir" "${CMAKE_CURRENT_BINARY_DIR}"
   DEPENDS ${HDDS_C_HEADERS} # CMake will re-run the command whenever the files change
