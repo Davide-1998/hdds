@@ -10,8 +10,9 @@ option(BUILD_HDDS_CXX "Enable building hdds_cxx library" ON)
 
 # Set CMAKE_BUILD_TYPE if neither parent nor project set it or if we are using
 # a multi-config generator
-if(NOT CMAKE_BUILD_TYPE OR NOT GENERATOR_IS_MULTI_CONFIG)
-  set(CMAKE_BUILD_TYPE "Release" CACHE STRING "Build type for the library" FORCE)
+get_property(HDDS_MULTI_CONFIG GLOBAL PROPERTY GENERATOR_IS_MULTI_CONFIG)
+if(NOT HDDS_MULTI_CONFIG AND NOT CMAKE_BUILD_TYPE)
+  set(CMAKE_BUILD_TYPE "Release" CACHE STRING "Build type for the library")
 endif()
 
 # Ensure cargo is installed
@@ -35,7 +36,7 @@ set(HDDS_C_LIBRARY_NAME ${HDDS_LIBRARY_PREFIX}hdds_c)
 
 # Use the build type to know the folder in which the library will be built
 if(${CMAKE_BUILD_TYPE} STREQUAL "Release" OR ${CMAKE_BUILD_TYPE} STREQUAL "Debug")
-    string(TOLOWER ${CMAKE_BUILD_TYPE} HDDS_BUILD_TYPE)
+    string(TOLOWER "${CMAKE_BUILD_TYPE}" HDDS_BUILD_TYPE)
 else()
     set(HDDS_BUILD_TYPE "release")
 endif()
