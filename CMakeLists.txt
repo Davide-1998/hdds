@@ -60,7 +60,7 @@ endif()
 set(HDDS_C_LIBRARY_NAME ${HDDS_LIBRARY_PREFIX}hdds_c)
 
 # Use the build type to know the folder in which the library will be built
-if(${CMAKE_BUILD_TYPE} STREQUAL "Release" OR ${CMAKE_BUILD_TYPE} STREQUAL "Debug")
+if("${CMAKE_BUILD_TYPE}" STREQUAL "Release" OR "${CMAKE_BUILD_TYPE}" STREQUAL "Debug")
     string(TOLOWER "${CMAKE_BUILD_TYPE}" HDDS_BUILD_TYPE)
 else()
     set(HDDS_BUILD_TYPE "release")
