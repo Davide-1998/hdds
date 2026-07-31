@@ -9,7 +9,7 @@ else()
   set(HDDS_SEARCHING_FOR_VERSION OFF)
   foreach(line IN LISTS HDDS_CARGO_TOML)
     # Search in Cargo.toml for the pattern 'major[.minor][.patch][.tweak]'
-    if(HDDS_SEARCHING_FOR_VERSION AND "${line}" MATCHES "version[\r\n\t ]*=[\r\n\t ]*\"?([0-9]*([\.][0-9]+)?([\.][0-9]+)?([\.][0-9]+)?)\"?$")
+    if(HDDS_SEARCHING_FOR_VERSION AND "${line}" MATCHES "version[\r\n\t ]*=[\r\n\t ]*\"?([0-9]+([\.][0-9]+)?([\.][0-9]+)?([\.][0-9]+)?)\"?$")
       set(HDDS_PROJECT_VERSION ${CMAKE_MATCH_1})
       break()
     endif()
