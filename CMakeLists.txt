@@ -2,13 +2,13 @@ cmake_minimum_required(VERSION 3.14 FATAL_ERROR)
 
 set(HDDS_PROJECT_VERSION "")
 
-if(NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/cargo.toml")
-  message(WARNING "Unable to find 'cargo.toml' in current directory: project version UNKNOWN")
+if(NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/Cargo.toml")
+  message(WARNING "Unable to find 'Cargo.toml' in current directory: project version UNKNOWN")
 else()
-  file(STRINGS "${CMAKE_CURRENT_SOURCE_DIR}/cargo.toml" HDDS_CARGO_TOML)
+  file(STRINGS "${CMAKE_CURRENT_SOURCE_DIR}/Cargo.toml" HDDS_CARGO_TOML)
   set(HDDS_SEARCHING_FOR_VERSION OFF)
   foreach(line IN LISTS HDDS_CARGO_TOML)
-    # Search in cargo.toml for the pattern 'major[.minor][.patch][.tweak]'
+    # Search in Cargo.toml for the pattern 'major[.minor][.patch][.tweak]'
     if(HDDS_SEARCHING_FOR_VERSION AND "${line}" MATCHES "version[\r\n\t ]*=[\r\n\t ]*\"?([0-9]*([\.][0-9]+)?([\.][0-9]+)?([\.][0-9]+)?)\"?$")
       set(HDDS_PROJECT_VERSION ${CMAKE_MATCH_1})
       break()
