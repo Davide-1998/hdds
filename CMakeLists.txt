@@ -93,9 +93,10 @@ endif()
 add_custom_target(${PROJECT_NAME}_rust ALL
   ${CARGO_EXECUTABLE} "rustc" "--manifest-path" "${CMAKE_CURRENT_SOURCE_DIR}/Cargo.toml"
                       "--package" "hdds-c" "${HDDS_CARGO_RELEASE_BUILD_FLAG}"
-                      "--crate-type" $<IF:$<BOOL:${BUILD_SHARED_LIBS}>,"cdylib","staticlib">
+                      "--crate-type" $<IF:$<BOOL:${BUILD_SHARED_LIBS}>,cdylib,staticlib>
                       "--target-dir" "${CMAKE_CURRENT_BINARY_DIR}"
   DEPENDS ${HDDS_C_HEADERS} # CMake will re-run the command whenever the files change
+  VERBATIM
 )
 
 # Generate the imported library for HDDS and link it to the custom target to ensure the custom command to be called
