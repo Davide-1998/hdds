@@ -96,6 +96,7 @@ add_custom_target(${PROJECT_NAME}_rust ALL
                       "--crate-type" $<IF:$<BOOL:${BUILD_SHARED_LIBS}>,cdylib,staticlib>
                       "--target-dir" "${CMAKE_CURRENT_BINARY_DIR}"
   DEPENDS ${HDDS_C_HEADERS} # CMake will re-run the command whenever the files change
+  BYPRODUCTS ${HDDS_LIBRARY_OUTPUT}
   VERBATIM
 )
 
